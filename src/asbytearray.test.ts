@@ -175,6 +175,20 @@ test("UTF read/write LE", () => {
     expect(result).toBe("Hello world");
 });
 
+
+test("UTF write err", () => {
+    const str = "a".repeat(100000);
+    const data = new ByteArray();
+    let result = false;
+    try {
+        data.writeUTF(str);
+    }
+    catch(e) {
+        result = true;
+    }
+    expect(result).toBe(true);
+});
+
 test("UTF bytes read/write", () => {
     const data = new ByteArray();
     data.writeUTFBytes("@@123 lol");
