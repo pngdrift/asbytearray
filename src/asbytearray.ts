@@ -294,10 +294,10 @@ class ByteArray {
     public writeInt(value: number): void {
         this.checkBuffer(4);
         if (this.endian === Endian.BIG_ENDIAN) {
-            this.buffer.writeUInt32BE(value & 0xFFFFFFFF, this.position);
+            this.buffer.writeInt32BE(value & 0xFFFFFFFF, this.position);
         }
         else {
-            this.buffer.writeUInt32LE(value & 0xFFFFFFFF, this.position);
+            this.buffer.writeInt32LE(value & 0xFFFFFFFF, this.position);
         }
         this.position += 4;
     }

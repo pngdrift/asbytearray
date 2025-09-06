@@ -241,3 +241,83 @@ test("clear", () => {
     const result = data.length;
     expect(result).toBe(0);
 });
+
+test("ByteArray constructor with initial buffer", () => {
+    const buffer = Buffer.from([1, 2, 3, 4]);
+    const data = new ByteArray(buffer);
+    expect(data.length).toBe(4);
+    expect(data.readByte()).toBe(1);
+    data.position += 2;
+    expect(data.readByte()).toBe(4);
+});
+
+test("bytesAvailable calc", () => {
+    const data = new ByteArray();
+    data.writeInt(12345);
+    data.writeShort(6789);
+    data.position = 0;
+    expect(data.bytesAvailable).toBe(6);
+    data.position = 2;
+    expect(data.bytesAvailable).toBe(4);
+});
+
+test("endian persistence", () => {
+    const data = new ByteArray();
+    data.endian = Endian.LITTLE_ENDIAN;
+    data.writeInt(0x12345678);
+    data.position = 0;
+    expect(data.readByte()).toBe(0x78);
+    expect(data.readByte()).toBe(0x56);
+    expect(data.readByte()).toBe(0x34);
+    expect(data.readByte()).toBe(0x12);
+});
+
+test("Write/read negative vals", () => {
+    const data = new ByteArray();
+    data.writeByte(-50);
+    data.writeShort(-1000);
+    data.writeInt(-100000);
+    data.position = 0;
+    expect(data.readByte()).toBe(-50);
+    expect(data.readShort()).toBe(-1000);
+    expect(data.readInt()).toBe(-100000);
+});
+
+test("Unsigned read of negative vals", () => {
+    const data = new ByteArray();
+    data.writeByte(-50);
+    data.writeShort(-1000);
+    data.position = 0;
+    expect(data.readUnsignedByte()).toBe(206);
+    expect(data.readUnsignedShort()).toBe(64536);
+});
+
+test("Length expansion fills with zeros", () => {
+    const data = new ByteArray();
+    data.writeInt(4305672);
+    data.length = 8;
+    data.position = 4;
+    expect(data.readInt()).toBe(0);
+});
+
+test("Write/read maximum values", () => {
+    const data = new ByteArray();
+    data.writeByte(255);
+    data.writeShort(65535);
+    data.writeInt(4294967295);
+    data.position = 0;
+    expect(data.readUnsignedByte()).toBe(255);
+    expect(data.readUnsignedShort()).toBe(65535);
+    expect(data.readUnsignedInt()).toBe(4294967295);
+});
+
+test("Write/read minimum values", () => {
+    const data = new ByteArray();
+    data.writeByte(-128);
+    data.writeShort(-32768);
+    data.writeInt(-2147483648);
+    data.position = 0;
+    expect(data.readByte()).toBe(-128);
+    expect(data.readShort()).toBe(-32768);
+    expect(data.readInt()).toBe(-2147483648);
+});
