@@ -14,21 +14,21 @@ class ByteArray {
     }
 
     /**
-	 * Moves, or returns the current position, in bytes, of the file
-	 * pointer into the ByteArray object. This is the point at which the
-	 * next call to a read method starts reading or a write method starts
-	 * writing.
-	 */
+     * Moves, or returns the current position, in bytes, of the file
+     * pointer into the ByteArray object. This is the point at which the
+     * next call to a read method starts reading or a write method starts
+     * writing.
+     */
     public get position(): number {
         return this._position;
     }
 
     /**
-	 * Moves, or returns the current position, in bytes, of the file
-	 * pointer into the ByteArray object. This is the point at which the
-	 * next call to a read method starts reading or a write method starts
-	 * writing.
-	 */
+     * Moves, or returns the current position, in bytes, of the file
+     * pointer into the ByteArray object. This is the point at which the
+     * next call to a read method starts reading or a write method starts
+     * writing.
+     */
     public set position(value: number) {
         this._position = value;
     }
